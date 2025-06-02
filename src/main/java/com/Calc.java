@@ -9,12 +9,11 @@ public class Calc {
         for (int i = 0; i < expression.size(); i++) {
             String token = expression.get(i);
             if (token.equals("(")) {
-                int closingIndex = expression.subList(i, expression.size()).indexOf(")") + i;
 
-                List<String> subExpression = new ArrayList<>(expression.subList(i + 1, closingIndex));
+                int closingIndex = expression.subList(expression.indexOf(")") + 1, expression.size()).indexOf(")") + expression.indexOf(")") + 1;
+                String subExp = String.join(" ", expression.subList(i + 1, closingIndex));
 
-                String subExpressionString = String.join(" ", subExpression);
-                int midResult = run(subExpressionString);
+                int midResult = run(subExp);
 
                 expression.subList(i, closingIndex + 1).clear();
                 expression.add(i, String.valueOf(midResult));
