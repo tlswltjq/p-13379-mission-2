@@ -6,6 +6,23 @@ import java.util.List;
 public class Calc {
     public static int run(String exp) {
         List<String> expression = toList(exp);
+        for (int i = 0; i < expression.size(); i++) {
+            String token = expression.get(i);
+            if (token.equals("(")) {
+                int closingIndex = expression.subList(i, expression.size()).indexOf(")") + i;
+
+                List<String> subExpression = new ArrayList<>(expression.subList(i + 1, closingIndex));
+
+                String subExpressionString = String.join(" ", subExpression);
+                int midResult = run(subExpressionString);
+
+                expression.subList(i, closingIndex + 1).clear();
+                expression.add(i, String.valueOf(midResult));
+
+                i = -1;
+            }
+        }
+
         for (int i = 1; i < expression.size(); i++) {
             String token = expression.get(i);
 
@@ -34,7 +51,8 @@ public class Calc {
     }
 
     public static List<String> toList(String exp) {
-        return new ArrayList<>(List.of(exp.split(" ")));
+        exp = exp.replaceAll("\\(", " ( ").replaceAll("\\)", " ) ");
+        return new ArrayList<>(List.of(exp.trim().split("\\s+")));
     }
 
     private static int mulOrDiv(int left, int right, String operator) {
