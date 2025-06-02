@@ -9,24 +9,16 @@ public class Calc {
         for (int i = 1; i < expression.size(); i++) {
             String token = expression.get(i);
 
-            int tmpResult = 0;
-            if (token.equals("*")) {
+            if (token.equals("*") || token.equals("/")) {
                 int left = Integer.parseInt(expression.get(i - 1));
                 int right = Integer.parseInt(expression.get(i + 1));
-                tmpResult = left * right;
-                expression.subList(i-1, i + 2).clear();
+                int tmpResult = mulOrDiv(left, right, token);
+                expression.subList(i - 1, i + 2).clear();
                 expression.add(i - 1, String.valueOf(tmpResult));
-                i=0;
-            } else if (token.equals("/")) {
-                int left = Integer.parseInt(expression.get(i - 1));
-                int right = Integer.parseInt(expression.get(i + 1));
-                tmpResult = left / right;
-                expression.subList(i-1, i + 2).clear();
-                expression.add(i - 1, String.valueOf(tmpResult));
-                i=0;
+                i = 0;
             }
-
         }
+
         int result = Integer.parseInt(expression.get(0));
 
         for (int i = 1; i < expression.size(); i += 2) {
@@ -45,4 +37,7 @@ public class Calc {
         return new ArrayList<>(List.of(exp.split(" ")));
     }
 
+    private static int mulOrDiv(int left, int right, String operator) {
+        return operator.equals("*") ? left * right : left / right;
+    }
 }
