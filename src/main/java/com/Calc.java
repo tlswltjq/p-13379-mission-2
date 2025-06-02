@@ -5,12 +5,7 @@ import java.util.List;
 
 public class Calc {
     public static int run(String exp) {
-        List<String> expression = toList(exp);
-        boolean reverse = false;
-        if (expression.get(0).equals("-")) {
-            expression.remove(0);
-            reverse = true;
-        }
+        List<String> expression = toList(exp.replaceAll("-\\(", " -1 * ("));
 
         for (int i = 0; i < expression.size(); i++) {
             String token = expression.get(i);
@@ -62,9 +57,6 @@ public class Calc {
             } else if (token.equals("-")) {
                 result -= right;
             }
-        }
-        if (reverse) {
-        return -result;
         }
             return result;
     }
