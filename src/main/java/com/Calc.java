@@ -6,6 +6,12 @@ import java.util.List;
 public class Calc {
     public static int run(String exp) {
         List<String> expression = toList(exp);
+        boolean reverse = false;
+        if (expression.get(0).equals("-")) {
+            expression.remove(0);
+            reverse = true;
+        }
+
         for (int i = 0; i < expression.size(); i++) {
             String token = expression.get(i);
             if (token.equals("(")) {
@@ -57,7 +63,10 @@ public class Calc {
                 result -= right;
             }
         }
-        return result;
+        if (reverse) {
+        return -result;
+        }
+            return result;
     }
 
     public static List<String> toList(String exp) {
