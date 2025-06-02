@@ -9,10 +9,21 @@ public class Calc {
         for (int i = 0; i < expression.size(); i++) {
             String token = expression.get(i);
             if (token.equals("(")) {
-
-                int closingIndex = expression.subList(expression.indexOf(")") + 1, expression.size()).indexOf(")") + expression.indexOf(")") + 1;
+                int closingIndex = -1;
+                int depth = 0;
+                for (int j = i + 1; j < expression.size(); j++) {
+                    if (expression.get(j).equals("(")) {
+                        depth++;
+                    } else if (expression.get(j).equals(")")) {
+                        if (depth == 0) {
+                            closingIndex = j;
+                            break;
+                        } else {
+                            depth--;
+                        }
+                    }
+                }
                 String subExp = String.join(" ", expression.subList(i + 1, closingIndex));
-
                 int midResult = run(subExp);
 
                 expression.subList(i, closingIndex + 1).clear();
